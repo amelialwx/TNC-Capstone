@@ -7,6 +7,8 @@ st.set_page_config(layout="wide", page_title="Home", page_icon="👋")
 # Page title
 st.title("Web App for TNC Agricultural Plastics Visualization")
 
+st.markdown('<style>' + open('style.css').read() + '</style>', unsafe_allow_html=True)
+
 # Introduction and description markdown
 st.markdown("""
 This is an interactive web application created using [Streamlit](https://streamlit.io) for The Nature Conservancy (TNC) to visualize agricultural plastics in California.

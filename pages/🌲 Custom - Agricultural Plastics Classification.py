@@ -10,6 +10,8 @@ import app.fnc as fnc
 st.set_page_config(layout="wide", page_title="Web App")
 st.title("Custom Model - Agricultural Plastics Classification")
 
+st.markdown('<style>' + open('style.css').read() + '</style>', unsafe_allow_html=True)
+
 # Set column layout
 col1, col2 = st.columns([5, 2])
 

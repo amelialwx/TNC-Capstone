@@ -11,6 +11,8 @@ import app.fnc as fnc
 st.set_page_config(layout="wide", page_title="Web App")
 st.title("Pretrained Model - Agricultural Plastics Classification")
 
+st.markdown('<style>' + open('style.css').read() + '</style>', unsafe_allow_html=True)
+
 # Initialize GEE map
 Map = geemap.Map()
 Map.add_basemap("SATELLITE")
@@ -123,109 +125,114 @@ with col2:
     end_date = end_date.strftime("%Y-%m-%d")
     print(f'DATE: {start_date} to {end_date}')
 
-    layers = {}
-    if st.session_state.layers_2 == None:
-        print("Creating gound truth layers...")
-        # Define a dictionary of style properties per class type
-        class_styles = ee.Dictionary({
-            '0': {'color': '1e90ff', 'width': 1, 'fillColor': 'red', 'pointSize': 5, 'pointShape': 'circle'},    # hoop
-            '1': {'color': '1e90ff', 'width': 1, 'fillColor': 'green', 'pointSize': 5, 'pointShape': 'circle'},  # mulch
-            '2': {'color': '1e90ff', 'width': 1, 'fillColor': 'blue', 'pointSize': 5, 'pointShape': 'circle'},  # other
-            '3': {'color': '1e90ff', 'width': 1, 'fillColor': 'yellow', 'pointSize': 5, 'pointShape': 'circle'}   # green house
-        })
+    with st.spinner('Loading...'):
+        # Create ground truth layers (labeled CSV points for visualization)
+        layers = {}
+        if st.session_state.layers_2 == None:
+            print("Creating gound truth layers...")
+            # Define a dictionary of style properties per class type
+            class_styles = ee.Dictionary({
+                '0': {'color': '1e90ff', 'width': 1, 'fillColor': 'red', 'pointSize': 5, 'pointShape': 'circle'},    # hoop
+                '1': {'color': '1e90ff', 'width': 1, 'fillColor': 'green', 'pointSize': 5, 'pointShape': 'circle'},  # mulch
+                '2': {'color': '1e90ff', 'width': 1, 'fillColor': 'blue', 'pointSize': 5, 'pointShape': 'circle'},  # other
+                '3': {'color': '1e90ff', 'width': 1, 'fillColor': 'yellow', 'pointSize': 5, 'pointShape': 'circle'}   # green house
+            })
 
-        # Create ground truth layer(s) for CSV data
-        for df, filename in zip(st.session_state.csv_data_2, csv_filenames):
-            points = fnc.get_data_as_points(df)
-            points_layer = ee.FeatureCollection(points)
+            # Create ground truth layer(s) for CSV data
+            for df, filename in zip(st.session_state.csv_data_2, csv_filenames):
+                points = fnc.get_data_as_points(df)
+                points_layer = ee.FeatureCollection(points)
 
-            # Map a function over the FeatureCollection to set the style property
-            points_layer = points_layer.map(
-                lambda feature: feature.set(
-                    'style',
-                    class_styles.get(
-                        ee.Number(feature.get('class')).format()  # Convert the class number to string to use as key
+                # Map a function over the FeatureCollection to set the style property
+                points_layer = points_layer.map(
+                    lambda feature: feature.set(
+                        'style',
+                        class_styles.get(
+                            ee.Number(feature.get('class')).format()  # Convert the class number to string to use as key
+                        )
                     )
                 )
-            )
 
-            # Style the FeatureCollection according to each feature's 'style' property.
-            style_points_layer = points_layer.style(
-                styleProperty='style',
-                neighborhood=8
-            )
+                # Style the FeatureCollection according to each feature's 'style' property.
+                style_points_layer = points_layer.style(
+                    styleProperty='style',
+                    neighborhood=8
+                )
 
-            layers[filename] = geemap.ee_tile_layer(style_points_layer, {}, filename)
+                layers[filename] = geemap.ee_tile_layer(style_points_layer, {}, filename)
 
-        # Create ground truth layer(s) for shape data
-        for fc_shape, filename in zip(st.session_state.fcs_shape_2, [group[0] for group in shape_filenames]):
-            # Map a function over the FeatureCollection to set the style property
-            fc_shape = fc_shape.map(
-                lambda feature: feature.set(
-                    'style',
-                    class_styles.get(
-                        ee.Number(feature.get('class')).format()  # Convert the class number to string to use as key
+            # Create ground truth layer(s) for shape data
+            for fc_shape, filename in zip(st.session_state.fcs_shape_2, [group[0] for group in shape_filenames]):
+                # Map a function over the FeatureCollection to set the style property
+                fc_shape = fc_shape.map(
+                    lambda feature: feature.set(
+                        'style',
+                        class_styles.get(
+                            ee.Number(feature.get('class')).format()  # Convert the class number to string to use as key
+                        )
                     )
                 )
-            )
 
-            # Style the FeatureCollection according to each feature's 'style' property.
-            style_points_layer = fc_shape.style(
-                styleProperty='style',
-                neighborhood=8
-            )
+                # Style the FeatureCollection according to each feature's 'style' property.
+                style_points_layer = fc_shape.style(
+                    styleProperty='style',
+                    neighborhood=8
+                )
 
-            layers[filename] = geemap.ee_tile_layer(style_points_layer, {}, filename)
-        st.session_state.layers_2 = layers
-    else:
-        print("Ground truth layers already created.")
-    
-    # County to classify on
-    county = 'Los Angeles'
-    if option:
-        county = option
-    # Check if the county or date range has changed
-    if (county != st.session_state.county_2) or (st.session_state.start_date_2 != start_date) or (st.session_state.end_date_2 != end_date):
-        selected_county = counties.filter(ee.Filter.eq('NAME', county))
-        roi = selected_county.geometry()
-        processedCollection = fnc.processImageCollection(ee.ImageCollection('COPERNICUS/S2_SR'), roi, start_date, end_date)
-        image = processedCollection.median().clip(roi)
-        print(f'COUNTY: Classifying on {county}.')
+                layers[filename] = geemap.ee_tile_layer(style_points_layer, {}, filename)
+            st.session_state.layers_2 = layers
+        else:
+            print("Ground truth layers already created.")
+        
+        # County to classify on
+        county = 'Los Angeles'
+        if option:
+            county = option
+        # Check if the county or date range has changed
+        if (county != st.session_state.county_2) or (st.session_state.start_date_2 != start_date) or (st.session_state.end_date_2 != end_date):
+            selected_county = counties.filter(ee.Filter.eq('NAME', county))
+            roi = selected_county.geometry()
+            processedCollection = fnc.processImageCollection(ee.ImageCollection('COPERNICUS/S2_SR'), roi, start_date, end_date)
+            image = processedCollection.median().clip(roi)
+            print(f'COUNTY: Classifying on {county}.')
 
-        # Classify
-        classified_RF = image.select(bands).classify(st.session_state.model_2)
-        accuracy_RF = st.session_state.model_2.confusionMatrix()
-        print(f"RESULTS: RF Resubstitution error matrix: {accuracy_RF.getInfo()}")
-        print(f"RESULTS: RF Training overall accuracy: {accuracy_RF.accuracy().getInfo()}")
+            # Classify
+            classified_RF = image.select(bands).classify(st.session_state.model_2)
+            accuracy_RF = st.session_state.model_2.confusionMatrix()
+            print(f"RESULTS: RF Resubstitution error matrix: {accuracy_RF.getInfo()}")
+            print(f"RESULTS: RF Training overall accuracy: {accuracy_RF.accuracy().getInfo()}")
 
-        # Update the session state with the current values
-        st.session_state.county_2 = county
-        st.session_state.start_date_2 = start_date
-        st.session_state.end_date_2 = end_date
-        st.session_state.image_2 = image
-        st.session_state.classified_RF_2 = classified_RF
-    else:
-        print(f'No change in county or date range. Using previous image for: {st.session_state.county_2}')
+            # Update the session state with the current values
+            st.session_state.county_2 = county
+            st.session_state.start_date_2 = start_date
+            st.session_state.end_date_2 = end_date
+            st.session_state.image_2 = image
+            st.session_state.classified_RF_2 = classified_RF
+        else:
+            print(f'No change in county or date range. Using previous image for: {st.session_state.county_2}')
 
-    palette = ['red', 'green', 'blue', 'yellow']
+        palette = ['red', 'green', 'blue', 'yellow']
 
-    # Map slider
-    st.session_state.layers_2["Sentinel-2 RGB"] = geemap.ee_tile_layer(st.session_state.image_2.select(bands), {'min': 0, 'max': 0.3, 'gamma': 1.4}, "Sentinel-2 RGB")
-    st.session_state.layers_2["Classification"] = geemap.ee_tile_layer(st.session_state.classified_RF_2, {'min': 0, 'max': 3, 'palette': palette}, "Classification")
+        # Map slider
+        st.session_state.layers_2["Sentinel-2 RGB"] = geemap.ee_tile_layer(st.session_state.image_2.select(bands), {'min': 0, 'max': 0.3, 'gamma': 1.4}, "Sentinel-2 RGB")
+        st.session_state.layers_2["Classification"] = geemap.ee_tile_layer(st.session_state.classified_RF_2, {'min': 0, 'max': 3, 'palette': palette}, "Classification")
 
-    options = list(st.session_state.layers_2.keys())
-    left = st.selectbox("Select a left layer:", options, index=len(options) - 2, help=fnc.tooltip_left_layer)
-    right = st.selectbox("Select a right layer:", options, index=len(options) - 1, help=fnc.tooltip_right_layer)
-    left_layer = st.session_state.layers_2[left]
-    right_layer = st.session_state.layers_2[right]
-    Map.split_map(left_layer, right_layer)
-    
-    # Add legend
-    legend_titles = ['Hoop', 'Mulch', 'Other', 'Green House']
-    Map.add_legend(title="Classification Legend", legend_dict=dict(zip(legend_titles, palette)))
+        options = list(st.session_state.layers_2.keys())
+        left = st.selectbox("Select a left layer:", options, index=len(options) - 2, help=fnc.tooltip_left_layer)
+        right = st.selectbox("Select a right layer:", options, index=len(options) - 1, help=fnc.tooltip_right_layer)
+        left_layer = st.session_state.layers_2[left]
+        right_layer = st.session_state.layers_2[right]
+        Map.split_map(left_layer, right_layer)
+        
+        # Add legend
+        legend_titles = ['Hoop', 'Mulch', 'Other', 'Green House']
+        Map.add_legend(title="Classification Legend", legend_dict=dict(zip(legend_titles, palette)))
 
 with col1:
+    # Display map
     Map.to_streamlit(height=750)
+
+    # Display CSV dataframes
     tabs = st.tabs(csv_filenames)
     for df, tab, filename in zip(st.session_state.csv_data_2, tabs, csv_filenames):
         with tab:
