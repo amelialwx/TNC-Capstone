@@ -66,7 +66,7 @@ If you have python 3.12 or above, the app might not work. You can download Pytho
 ```
 git clone https://github.com/amelialwx/TNC-Web-App.git
 ```
-2. Navigate to the projecto directory:
+2. Navigate to the project directory:
 ```
 cd TNC-Web-App
 ```
@@ -117,10 +117,3 @@ Any new data for this page must be placed in the data folder and specified under
 ## Acknowledgements
 
 Special thanks to Darcy and Kirk for their expert guidance as project partners, and to our mentors, Chase and Usha, for their invaluable support. Our appreciation also goes to Yuanyuan for her advisory role and to TNC volunteer Brandee, whose data contribution was essential to our project's success.
-
-
-
-
-
-
-
