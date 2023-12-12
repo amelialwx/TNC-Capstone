@@ -15,6 +15,19 @@ st.markdown('<style>' + open('style.css').read() + '</style>', unsafe_allow_html
 # Set column layout
 col1, col2 = st.columns([5, 2])
 
+# GEE authorization (local)
+data_service_account = '''
+Copy content of your data service account JSON file here
+'''
+service_account = "..."
+
+# GEE authorization (Streamlit cloud)
+data_service_account = st.secrets['data-service-account']
+service_account = st.secrets['service_account']
+json_object = json.dumps(json.loads(data_service_account, strict=False))
+credentials = ee.ServiceAccountCredentials(service_account, key_data=json_object)
+ee.Initialize(credentials)
+
 # Initialize GEE map
 Map = geemap.Map()
 Map.add_basemap("SATELLITE")
