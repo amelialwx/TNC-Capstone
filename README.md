@@ -78,7 +78,7 @@ pip install -r requirements.txt
 **Running the app**
 1. Start the server:
 ```
-streamlit run Home.py
+sh startup.sh
 ```
 2. Follow the GEE authentication process.
 3. The app should now be running in your browser.
