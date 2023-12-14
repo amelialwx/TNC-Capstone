@@ -11,6 +11,8 @@ import app.fnc as fnc
 st.set_page_config(layout="wide", page_title="Web App")
 st.title("Custom Model - Agricultural Plastics Classification")
 
+st.sidebar.caption("""Source code on [GitHub](https://github.com/amelialwx/TNC-Capstone).""")
+
 # Set column layout
 col1, col2 = st.columns([5, 2])
 
