@@ -1,4 +1,4 @@
-# Web App for Agricultural Plastics Visualization
+# TNC Agricultural Plastics Mapping: Capstone
 
 ## Project Team
 
@@ -12,12 +12,14 @@
 
 ## Description
 
-This is a interactive web application for The Nature Conservancy (TNC). This app, built using Streamlit, aims to visualize and classify agricultural plastics, providing insightful data to drive environmental conservation efforts.
+This is the Agricultural Plastics Mapping Capstone project for The Nature Conservancy (TNC). 
 
-This app consists of two main pages, each offering unique functionalities:
-1. **First page (🌲 Custom - Agricultural Plastics Classification)**: Allows for the user to train a custom model by uploading CSv data to perform classification and visualization.
-2. **Second page (🌲 Pretrained - Agricultural Plastics Classification)**: Utilizes a pre-trained model using data from Oxnard, Santa Maria, Mendocino, and Watsonville with additional feature engineering to perform classification and visualization.
+## Project Deliverables
 
+1. [Code](https://github.com/amelialwx/TNC-Capstone/blob/main/deliverables/Capstone_Notebook.ipynb)
+2. [Poster](https://github.com/amelialwx/TNC-Capstone/blob/main/deliverables/Capstone_Poster.pdf)
+3. [Paper](https://github.com/amelialwx/TNC-Capstone/blob/main/deliverables/Capstone_Paper.pdf)
+4. [Web App](https://tnc-web-app.streamlit.app/)
 
 ## Project Organization
     ├── app
@@ -53,7 +55,15 @@ This app consists of two main pages, each offering unique functionalities:
     ├── README.md
     └── requirements.txt
 
-## Installation and Setup
+## Web Application
+
+The TNC web visualization application, built using Streamlit, aims to visualize and classify agricultural plastics, providing insightful data to drive environmental conservation efforts.
+
+This app consists of two main pages, each offering unique functionalities:
+1. **First page (🌲 Custom - Agricultural Plastics Classification)**: Allows for the user to train a custom model by uploading CSv data to perform classification and visualization.
+2. **Second page (🌲 Pretrained - Agricultural Plastics Classification)**: Utilizes a pre-trained model using data from Oxnard, Santa Maria, Mendocino, and Watsonville with additional feature engineering to perform classification and visualization.
+
+## Local Installation and Setup
 
 **Prerequisites**
 ```
@@ -64,25 +74,67 @@ If you have python 3.12 or above, the app might not work. You can download Pytho
 **Installation Steps**
 1. Clone the repository: 
 ```
-git clone https://github.com/amelialwx/TNC-Web-App.git
+git clone https://github.com/amelialwx/TNC-Capstone.git
 ```
 2. Navigate to the project directory:
 ```
-cd TNC-Web-App
+cd TNC-Capstone
 ```
 3. Install dependencies
 ```
 pip install -r requirements.txt
 ```
+4. Registering for a Google Earth Engine account
+- Head to [Google Earth Engine](https://code.earthengine.google.com/)
+- Sign in with your Google account
+- Register a new project or use an existing cloud project
+- Head to [GCP Console](https://console.cloud.google.com/home/dashboard) and make sure that you are within the cloud project you just created
+- Search for "Google Earth Engine API" from the top search box and enable it
+- Search for "Service Accounts" from the top search box OR go to: "IAM & Admins" > "Service Accounts" and create a new service account called "data-service-account"
+- For "Grant this service account access to project", select "Earth Engine Resource Admin"
+- Click done. This will create a service account
+- Click on the "..." under the "Actions" column and select "Manage keys"
+- Click on "ADD KEY" > "Create new key" with "Key type" as JSON
+- Navigate to `~/.streamlit/secrets.toml` for macOS/Linux or `%userprofile%/.streamlit/secrets.toml`
+- Paste the content of the downloaded JSON file into `secrets.toml` within the `data-service-account` variable
+- `service_account` should be the same as `client_email`
+```
+data-service-account = '''
+{
+  "type": "...",
+  "project_id": "...",
+  "private_key_id": "...",
+  "private_key": "...",
+  "client_email": "...",
+  "client_id": "...",
+  "auth_uri": "...",
+  "token_uri": "...",
+  "auth_provider_x509_cert_url": "...",
+  "client_x509_cert_url": "...",
+  "universe_domain": "..."
+}
+'''
+service_account = "..."
+```
 
 **Running the app**
+
 1. Start the server:
 ```
 sh startup.sh
 ```
-2. Follow the GEE authentication process.
-3. The app should now be running in your browser.
+2. The app should now be running in your browser.
 ![home](assets/home.png)
+
+**Deployment**
+
+1. Create a streamlit account [here](https://share.streamlit.io/)
+2. Follow these [instructions](https://docs.streamlit.io/streamlit-community-cloud/deploy-your-app)
+3. Your app is now deployed
+![deploy](assets/deploy.png)
+4. Under the settings of the app, paste the content of `secrets.toml` into Streamlit secrets
+![streamlit_secrets](assets/secrets_streamlit.png)
+5. Reboot the app to integrate the new Streamlit secrets
 
 ## Usage
 
