@@ -12,14 +12,6 @@ import app.fnc as fnc
 st.set_page_config(layout="wide", page_title="Web App")
 st.title("Pretrained Model - Agricultural Plastics Classification")
 
-st.markdown('<style>' + open('style.css').read() + '</style>', unsafe_allow_html=True)
-
-# GEE authorization (local)
-data_service_account = '''
-Copy content of your data service account JSON file here
-'''
-service_account = "..."
-
 # GEE authorization (Streamlit cloud)
 data_service_account = st.secrets['data-service-account']
 service_account = st.secrets['service_account']
