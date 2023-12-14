@@ -22,42 +22,56 @@ This is the Agricultural Plastics Mapping Capstone project for The Nature Conser
 4. [Web App](https://tnc-web-app.streamlit.app/)
 
 ## Project Organization
-    ├── app
-        ├── fnc.py
-    ├── data
-        ├── label_mulch_hoop.cpg
-        ├── label_mulch_hoop.dbf
-        ├── label_mulch_hoop.fix
-        ├── label_mulch_hoop.prj
-        ├── label_mulch_hoop.shp
-        ├── label_mulch_hoop.shx
-        ├── label_nonplastic.cpg
-        ├── label_nonplastic.dbf
-        ├── label_nonplastic.fix
-        ├── label_nonplastic.prj
-        ├── label_nonplastic.shp
-        ├── label_nonplastic.shx
-        ├── Oxnard.cpg
-        ├── Oxnard.dbf
-        ├── Oxnard.fix
-        ├── Oxnard.prj
-        ├── Oxnard.shp
-        ├── Oxnard.shx
-        ├── Mendocino.csv
-        ├── SantaMaria.csv
-        └── Watsonville.csv
-    ├── pages
-        ├── 🌲 Custom - Agricultural Plastics Classification.py
-        ├── 🌲 Pretrained - Agricultural Plastics Classification.py
-    ├── .gitignore
+
+    .
     ├── Home.py
     ├── LICENSE
     ├── README.md
-    └── requirements.txt
+    ├── app
+    │   └── fnc.py
+    ├── assets
+    │   ├── deploy.png
+    │   ├── home.png
+    │   ├── page1_demo.gif
+    │   ├── page2_demo.gif
+    │   ├── page2_paths.png
+    │   ├── secrets_local.png
+    │   └── secrets_streamlit.png
+    ├── data
+    │   ├── Mendocino.csv
+    │   ├── Oxnard.cpg
+    │   ├── Oxnard.dbf
+    │   ├── Oxnard.fix
+    │   ├── Oxnard.prj
+    │   ├── Oxnard.shp
+    │   ├── Oxnard.shx
+    │   ├── SantaMaria.csv
+    │   ├── Watsonville.csv
+    │   ├── label_mulch_hoop.cpg
+    │   ├── label_mulch_hoop.dbf
+    │   ├── label_mulch_hoop.fix
+    │   ├── label_mulch_hoop.prj
+    │   ├── label_mulch_hoop.shp
+    │   ├── label_mulch_hoop.shx
+    │   ├── label_nonplastic.cpg
+    │   ├── label_nonplastic.dbf
+    │   ├── label_nonplastic.fix
+    │   ├── label_nonplastic.prj
+    │   ├── label_nonplastic.shp
+    │   └── label_nonplastic.shx
+    ├── deliverables
+    │   ├── Capstone_Notebook.ipynb
+    │   ├── Capstone_Paper.pdf
+    │   └── Capstone_Poster.pdf
+    ├── pages
+    │   ├── 🌲 Custom - Agricultural Plastics Classification.py
+    │   └── 🌲 Pretrained - Agricultural Plastics Classification.py
+    ├── requirements.txt
+    └── startup.sh
 
 ## Web Application
 
-The TNC web visualization application, built using Streamlit, aims to visualize and classify agricultural plastics, providing insightful data to drive environmental conservation efforts.
+The TNC web visualization application, built using [Streamlit](https://streamlit.io/), aims to visualize and classify agricultural plastics, providing insightful data to drive environmental conservation efforts.
 
 This app consists of two main pages, each offering unique functionalities:
 1. **First page (🌲 Custom - Agricultural Plastics Classification)**: Allows for the user to train a custom model by uploading CSv data to perform classification and visualization.
