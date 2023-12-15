@@ -7,7 +7,10 @@ st.set_page_config(layout="wide", page_title="Home", page_icon="👋")
 # Page title
 st.title("Web App for TNC Agricultural Plastics Visualization")
 
-st.sidebar.caption("""Source code on [GitHub](https://github.com/amelialwx/TNC-Capstone).""")
+st.sidebar.caption("""
+Source code on [GitHub](https://github.com/amelialwx/TNC-Capstone).\n
+For any issues, please contact Amelia Li at [weixili@g.harvard.edu](mailto:weixili@g.harvard.edu).
+""")
 
 # Introduction and description markdown
 st.markdown("""
