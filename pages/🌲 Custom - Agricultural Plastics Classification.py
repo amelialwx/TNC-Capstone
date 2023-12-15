@@ -8,7 +8,7 @@ import app.fnc as fnc
 
 
 # Page configuration
-st.set_page_config(layout="wide", page_title="Web App")
+st.set_page_config(layout="wide", page_title="Custom")
 st.title("Custom Model - Agricultural Plastics Classification")
 
 st.sidebar.caption("""
