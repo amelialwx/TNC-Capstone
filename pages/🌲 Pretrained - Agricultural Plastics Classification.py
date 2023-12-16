@@ -9,10 +9,13 @@ import app.fnc as fnc
 
 
 # Page configuration
-st.set_page_config(layout="wide", page_title="Web App")
+st.set_page_config(layout="wide", page_title="Pretrained")
 st.title("Pretrained Model - Agricultural Plastics Classification")
 
-st.sidebar.caption("""Source code on [GitHub](https://github.com/amelialwx/TNC-Capstone).""")
+st.sidebar.caption("""
+Source code on [GitHub](https://github.com/amelialwx/TNC-Capstone).\n
+For any issues, please contact Amelia Li at [weixili@g.harvard.edu](mailto:weixili@g.harvard.edu).
+""")
 
 # GEE authorization (Streamlit cloud)
 data_service_account = st.secrets['data-service-account']
