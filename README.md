@@ -1,4 +1,5 @@
 # TNC Agricultural Plastics Mapping: Capstone
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://tnc-web-app.streamlit.app/)
 
 ## Project Team
 
